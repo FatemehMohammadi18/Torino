@@ -1,7 +1,24 @@
 {
   "compilerOptions": {
+    "baseUrl": "./src",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/app/*": ["app/*"],
+      "@/api/*": ["app/api/*"],
+      "@/components/*": ["components/*"],
+      "@/components/layout/*": ["components/layout/*"],
+      "@/components/module/*": ["components/module/*"],
+      "@/components/public/*": ["components/public/*"],
+      "@/components/container/*": ["components/container/*"],
+      "@/components/atomic/*": ["components/atomic/*"],
+      "@/components/icons/*": ["components/icons/*"],
+      "@/components/modules/*": ["components/modules/*"],
+      "@/components/template/*": ["components/template/*"],
+      "@/components/template/auth/*": ["components/template/auth/*"],
+      "@/config/*": ["config/*"],
+      "@/constants/*": ["constants/*"],
+      "@/utils/*": ["utils/*"],
+      "@/services/*": ["services/*"],
+      "@/context/*": ["context/*"],
     }
   }
 }
