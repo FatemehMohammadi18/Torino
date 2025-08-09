@@ -1,21 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
 import DatePicker from "react-multi-date-picker";
 import DatePanel from "react-multi-date-picker/plugins/date_panel";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 
 function PersianDatePicker({ dateRange, setDateRange }) {
-  const [value, setValue] = useState([]);
-
   return (
     <DatePicker
-      value={value}
-      onChange={(val) => {
-        setValue(val);
-        setDateRange(val);
-      }}
+      value={dateRange}
+      onChange={setDateRange}
       range
       containerClassName="custom-date-picker"
       calendar={persian}
@@ -40,7 +34,7 @@ function PersianDatePicker({ dateRange, setDateRange }) {
         "بهمن",
         "اسفند",
       ]}
-      plugins={[<DatePanel position="right" />]}
+      plugins={[<DatePanel key="date-panel" position="right" />]}
       placeholder="تاریخ"
     />
   );
