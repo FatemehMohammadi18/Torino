@@ -23,7 +23,7 @@ function Transactions() {
     transactions();
   }, []);
   return (
-    <div>
+    <div className="min-h-screen">
       {transactions.length > 0 ? (
         <div className="overflow-hidden rounded-[10px] border border-black/25">
           <table className="table-auto w-full rounded-[10px] border-[1px] border-black/25">
