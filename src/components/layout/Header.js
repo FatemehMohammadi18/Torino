@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useEffect, useState } from "react";
+import { Suspense, useContext, useEffect, useState } from "react";
 import MenuIcon from "../icons/MenuIcon";
 import Image from "next/image";
 import MenuItems from "../public/MenuItems";
@@ -32,7 +32,13 @@ function Header() {
             className="w-5 h-4"
             onClick={() => setShowMenu((prev) => !prev)}
           />
-          {user ? <UserBtn user={user} /> : <BtnLogin />}
+          {user ? (
+            <UserBtn user={user} />
+          ) : (
+            <Suspense fallback={<p>loading</p>}>
+              <BtnLogin />
+            </Suspense>
+          )}
         </div>
         <Image
           src="/images/Torino.jpg"
@@ -70,7 +76,9 @@ function Header() {
           </div>
         ) : (
           <div className="hidden lg:flex">
-            <BtnLogin />
+            <Suspense fallback={<p>loading</p>}>
+              <BtnLogin />
+            </Suspense>
           </div>
         )}
       </div>
