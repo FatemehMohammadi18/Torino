@@ -1,10 +1,30 @@
-import { getData } from "actions/tours";
+"use client";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import { useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
-export default async function TourDetails({ searchParams }) {
-  const tours = await getData({ searchParams });
+export default function TourDetails({ initialTours }) {
+  const searchParams = useSearchParams();
+  const query = searchParams.toString();
+  const [tours, setTours] = useState(initialTours);
+
+  useEffect(() => {
+    if (!query) {
+      setTours(initialTours);
+      return;
+    }
+
+    async function fetchTours() {
+      const url = `http://localhost:6500/tour?${query}`;
+      const res = await fetch(url);
+      if (!res.ok) return;
+      const data = await res.json();
+      setTours(data);
+    }
+    fetchTours();
+  }, [query, initialTours]);
+
   return (
     <div className="flex flex-wrap justify-center gap-8 xl:gap-4 xl:justify-start">
       {tours?.length > 0 ? (

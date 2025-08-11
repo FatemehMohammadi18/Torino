@@ -1,6 +1,5 @@
 "use client";
-import { useSearchParams } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
+import { Suspense, useContext, useEffect, useState } from "react";
 import MenuIcon from "../icons/MenuIcon";
 import Image from "next/image";
 import MenuItems from "../public/MenuItems";
@@ -8,6 +7,7 @@ import BtnLogin from "../atomic/BtnLogin";
 import { UserContext } from "@/context/UserContext";
 import UserBtn from "../atomic/UserBtn";
 import getProfile from "@/services/userProfile";
+import Link from "next/link";
 
 function Header() {
   const [showMenu, setShowMenu] = useState(false);
@@ -33,16 +33,23 @@ function Header() {
             className="w-5 h-4"
             onClick={() => setShowMenu((prev) => !prev)}
           />
-          {user ? <UserBtn user={user} /> : <BtnLogin />}
+          {user ? (
+            <UserBtn user={user} />
+          ) : (
+            <Suspense fallback={<p>loading</p>}>
+              <BtnLogin />
+            </Suspense>
+          )}
         </div>
-        <Image
-          src="/images/Torino.jpg"
-          width={146}
-          height={44}
-          href="/"
-          alt="تورینو برگزار کننده بهترین تور های داخلی و خارجی"
-          className="hidden lg:block lg:ml-14"
-        />
+        <Link href="/">
+            <Image
+              src="/images/Torino.jpg"
+              width={146}
+              height={44}
+              alt="تورینو برگزار کننده بهترین تور های داخلی و خارجی"
+              className="hidden lg:block lg:ml-14"
+            />
+        </Link>
         {showMenu && (
           <div
             className={`fixed inset-0 z-50 transition-all duration-300 ${
@@ -71,7 +78,9 @@ function Header() {
           </div>
         ) : (
           <div className="hidden lg:flex">
-            <BtnLogin />
+            <Suspense fallback={<p>loading</p>}>
+              <BtnLogin />
+            </Suspense>
           </div>
         )}
       </div>

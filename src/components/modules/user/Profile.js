@@ -83,7 +83,7 @@ function Profile() {
               editUserInfo && `hidden`
             }`}
           >
-            <Image src="/images/editIcon.svg" width={16} height={16} />
+            <Image src="/images/editIcon.svg" width={16} height={16} alt="ویرایش" />
 
             {email ? "ویرایش" : "افزودن"}
           </button>
@@ -128,7 +128,7 @@ function Profile() {
               editPersonalInfo && `hidden`
             }`}
           >
-            <Image src="/images/editIcon.svg" width={16} height={16} />
+            <Image src="/images/editIcon.svg" width={16} height={16} alt="ویرایش"/>
 
             {firstName || lastName || nationalCode || birthDate
               ? "ویرایش"
@@ -204,7 +204,7 @@ function Profile() {
               editBankInfo && `hidden`
             }`}
           >
-            <Image src="/images/editIcon.svg" width={16} height={16} />
+            <Image src="/images/editIcon.svg" width={16} height={16} alt="ویرایش"/>
             {debitCard_code || shaba_code || accountIdentifier || birthDate
               ? "ویرایش"
               : "افزودن"}

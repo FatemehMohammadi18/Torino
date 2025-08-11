@@ -8,7 +8,7 @@ import { checkOtpAction } from "actions/checkOtpAction";
 import { setCookie } from "@/utils/cookie";
 import { UserContext } from "@/context/UserContext";
 
-function CheckOtpForm({ mobile, setStep, setIsOpen }) {
+function CheckOtpForm({ mobile, setStep, setIsOpen, onSuccess }) {
   const [code, setCode] = useState("");
   const [showResend, setShowResend] = useState(false);
   const [state, formAction] = useActionState(checkOtpAction, null);
@@ -17,8 +17,13 @@ function CheckOtpForm({ mobile, setStep, setIsOpen }) {
     if (state?.success) {
       const { accessToken, refreshToken, user } = state.data;
       setCookie(state.data);
-      setIsOpen(false);
       setUser(user);
+
+      setIsOpen(false);
+
+      setTimeout(() => {
+        onSuccess();
+      }, 100);
     }
   }, [state]);
   return (

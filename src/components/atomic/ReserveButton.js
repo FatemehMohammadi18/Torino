@@ -1,14 +1,29 @@
 "use client";
 
+import { useToast } from "@/context/toastContext";
+import { UserContext } from "@/context/UserContext";
 import { addToBasket } from "@/services/addToBaket";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useContext, useState } from "react";
 
 export default function ReserveButton({ tourId, availableSeats }) {
+  const pathname = usePathname();
   const router = useRouter();
+  const { user, loading } = useContext(UserContext);
+  const [redirecting, setRedirecting] = useState(false);
+  const { showToast } = useToast();
 
   const handleClick = async () => {
-    await addToBasket(tourId);
-    router.push("/basket");
+    if (!loading && !user) {
+      setRedirecting(true);
+      showToast({ message: "ابتدا در سایت ثبت نام کنید.", type: "error" });
+      setTimeout(() => {
+        router.push(`/?redirect=${encodeURIComponent(pathname)}`);
+      }, 1000);
+    } else {
+      await addToBasket(tourId);
+      router.push("/basket");
+    }
   };
 
   return (
