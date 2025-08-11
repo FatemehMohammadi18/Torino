@@ -7,6 +7,7 @@ import BtnLogin from "../atomic/BtnLogin";
 import { UserContext } from "@/context/UserContext";
 import UserBtn from "../atomic/UserBtn";
 import getProfile from "@/services/userProfile";
+import Link from "next/link";
 
 function Header() {
   const [showMenu, setShowMenu] = useState(false);
@@ -40,14 +41,15 @@ function Header() {
             </Suspense>
           )}
         </div>
-        <Image
-          src="/images/Torino.jpg"
-          width={146}
-          height={44}
-          href="/"
-          alt="تورینو برگزار کننده بهترین تور های داخلی و خارجی"
-          className="hidden lg:block lg:ml-14"
-        />
+        <Link href="/">
+            <Image
+              src="/images/Torino.jpg"
+              width={146}
+              height={44}
+              alt="تورینو برگزار کننده بهترین تور های داخلی و خارجی"
+              className="hidden lg:block lg:ml-14"
+            />
+        </Link>
         {showMenu && (
           <div
             className={`fixed inset-0 z-50 transition-all duration-300 ${
