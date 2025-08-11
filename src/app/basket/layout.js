@@ -35,7 +35,7 @@ export default function BasketLayout({ children }) {
       </div>
     );
   return (
-    <div className="bg-neutral-100 py-2">
+    <div className="bg-neutral-100 py-2 min-h-screen">
       <Wrapper>{children}</Wrapper>
     </div>
   );

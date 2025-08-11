@@ -4,8 +4,8 @@ import TourDetails from "@/components/public/TourDetails";
 async function page() {
   const tours = await getData();
   return (
-    <div className="py-6">
-      <TourDetails tours={tours}/>
+    <div className="py-6 min-h-screen">
+      <TourDetails initialTours={tours} />
     </div>
   );
 }
