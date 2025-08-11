@@ -56,7 +56,7 @@ function SearchTour() {
     filters.endDate = endDateISO;
 
     const query = new URLSearchParams(filters).toString();
-    router.push(`/?${query}`);
+    router.push(`/?${query}`, {scroll: false});
   };
 
   return (
