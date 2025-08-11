@@ -1,11 +1,11 @@
+import getData from "@/actions/tours";
 import TourDetails from "@/components/public/TourDetails";
-import React from "react";
 
-async function page({ searchParams }) {
-  const newSearchParams = await searchParams;
+async function page() {
+  const tours = await getData();
   return (
     <div className="py-6">
-      <TourDetails searchParams={newSearchParams} />
+      <TourDetails tours={tours}/>
     </div>
   );
 }
