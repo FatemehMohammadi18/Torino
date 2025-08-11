@@ -1,18 +1,30 @@
 "use client";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import Wrapper from "@/components/public/Wrapper";
 import { UserContext } from "@/context/UserContext";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function BasketLayout({ children }) {
-  const { user } = useContext(UserContext);
+  const pathname = usePathname();
+  const { user, loading } = useContext(UserContext);
   const router = useRouter();
+  const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
-    if (!user) {
-      router.push("/");
+    if (!loading && !user && !redirecting) {
+      setRedirecting(true);
+      setTimeout(() => {
+        router.push(`/?redirect=${encodeURIComponent(pathname)}`);
+      }, 1000);
     }
-  }, [user]);
+  }, [user, loading, redirecting]);
+
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p>در حال بارگذاری...</p>
+      </div>
+    );
 
   if (!user)
     return (

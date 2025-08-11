@@ -1,15 +1,31 @@
 "use client";
 import ProfileIcon from "@/components/icons/ProfileIcon";
 import SignInButtomIcon from "@/components/icons/SignInButtom";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SendOtpForm from "../template/auth/SendOtpForm";
 import ModalContainer from "@/components/container/ModalContainer";
 import CheckOtpForm from "../template/auth/CheckOtpForm";
+import { useRouter, useSearchParams } from "next/navigation";
 
 function BtnLogin() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const redirectPath = searchParams.get("redirect") || "/";
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState("login");
   const [mobile, setMobile] = useState("");
+
+  const handleLoginSuccess = () => {
+    router.push(redirectPath);
+  };
+
+  useEffect(() => {
+    if (searchParams.get("redirect")) {
+      setIsOpen(true);
+      setStep("login");
+    }
+  }, [searchParams]);
+
   return (
     <>
       <SignInButtomIcon
@@ -41,6 +57,7 @@ function BtnLogin() {
             mobile={mobile}
             setStep={setStep}
             setIsOpen={setIsOpen}
+            onSuccess={handleLoginSuccess}
           />
         </ModalContainer>
       )}

@@ -1,5 +1,4 @@
 "use client";
-import { useSearchParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import MenuIcon from "../icons/MenuIcon";
 import Image from "next/image";

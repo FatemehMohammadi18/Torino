@@ -12,7 +12,6 @@ const getTour = async () => {
     },
     cache: "no-store",
   });
-
   return await res.json();
 };
 
