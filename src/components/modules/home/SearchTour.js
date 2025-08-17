@@ -1,20 +1,25 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import getData from "@/actions/tours";
 
 import PersianDatePicker from "@/components/public/PersianDatePicker";
 
+import DateObject from "react-date-object";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
+
 function SearchTour() {
-  const [origin, setOrigin] = useState("");
-  const [destination, setDestination] = useState("");
+  const [origin, setOrigin] = useState({ id: "", name: "" });
+  const [destination, setDestination] = useState({ id: "", name: "" });
   const [origins, setOrigins] = useState([]);
   const [destinations, setDestinations] = useState([]);
   const [dateRange, setDateRange] = useState([null, null]);
 
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     async function fetchTours() {
@@ -37,26 +42,67 @@ function SearchTour() {
     fetchTours();
   }, []);
 
+  useEffect(() => {
+    if (!origins.length && !destinations.length) return;
+
+    const params = Object.fromEntries(searchParams.entries());
+
+    if (params.originId && !origin.id) {
+      const foundOrigin = origins.find(([id]) => id === params.originId);
+      if (foundOrigin) {
+        setOrigin({ id: foundOrigin[0], name: foundOrigin[1] });
+      }
+    }
+    if (params.destinationId && !destination.id) {
+      const foundDestination = destinations.find(
+        ([id]) => id === params.destinationId
+      );
+      if (foundDestination) {
+        setDestination({ id: foundDestination[0], name: foundDestination[1] });
+      }
+    }
+    if (params.startDate) {
+      const start = new DateObject({
+        date: new Date(params.startDate),
+        calendar: persian,
+        locale: persian_fa,
+      });
+      setDateRange((prev) => [start, prev[1]]);
+    }
+
+    if (params.endDate) {
+      const end = new DateObject({
+        date: new Date(params.endDate),
+        calendar: persian,
+        locale: persian_fa,
+      });
+      setDateRange((prev) => [prev[0], end]);
+    }
+  }, [searchParams, origins, destinations]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const [startDate, endDate] = dateRange;
 
-    const startDateObj = startDate.toDate();
-    startDateObj.setUTCHours(0, 0, 0, 0);
-    const startDateISO = startDateObj.toISOString();
-
-    const endDateObj = endDate.toDate();
-    endDateObj.setUTCHours(0, 0, 0, 0);
-    const endDateISO = endDateObj.toISOString();
-
     const filters = {};
-    if (destination) filters.destinationId = destination;
-    if (origin) filters.originId = origin;
-    filters.startDate = startDateISO;
-    filters.endDate = endDateISO;
+
+    if (origin.id) filters.originId = origin.id;
+    if (destination.id) filters.destinationId = destination.id;
+
+    if (startDate) {
+      const startDateObj = startDate.toDate();
+      startDateObj.setUTCHours(0, 0, 0, 0);
+      filters.startDate = startDateObj.toISOString();
+    }
+
+    if (endDate) {
+      const endDateObj = endDate.toDate();
+      endDateObj.setUTCHours(0, 0, 0, 0);
+      filters.endDate = endDateObj.toISOString();
+    }
 
     const query = new URLSearchParams(filters).toString();
-    router.push(`/?${query}`, {scroll: false});
+    router.push(`/?${query}`, { scroll: false });
   };
 
   return (
@@ -72,12 +118,17 @@ function SearchTour() {
         >
           <select
             name="origin"
-            value={origin}
-            onChange={(e) => setOrigin(e.target.value)}
+            value={origin.id}
+            onChange={(e) => {
+              const selectedId = e.target.value;
+              const selectedName =
+                e.target.options[e.target.selectedIndex].text;
+              setOrigin({ id: selectedId, name: selectedName });
+            }}
             className="origin w-5/12 h-[47px] appearance-none border rounded px-8 py-1 text-center lg:border-0 lg:w-[23%] lg:text-start lg:px-2"
           >
             <option value="" className="hidden">
-              مبدا
+              {origin.name || "مبدا"}
             </option>
             {origins.map(([id, name]) => (
               <option key={id} value={id}>
@@ -88,8 +139,13 @@ function SearchTour() {
           <hr className="hidden lg:block w-0.5 min-h-[50px] bg-black/60" />
           <select
             name="destination"
-            value={destination}
-            onChange={(e) => setDestination(e.target.value)}
+            value={destination.id}
+            onChange={(e) => {
+              const selectedId = e.target.value;
+              const selectedName =
+                e.target.options[e.target.selectedIndex].text;
+              setDestination({ id: selectedId, name: selectedName });
+            }}
             className="destination w-5/12 h-[47px] appearance-none border rounded px-8 py-1 text-center lg:border-0 lg:w-[23%] lg:text-start lg:px-2"
           >
             <option value="" className="hidden">
@@ -115,6 +171,7 @@ function SearchTour() {
           </button>
         </form>
       </div>
+      <h2 className="text-xl font-normal text-[#000000] mt-14">همه تورها</h2>
     </div>
   );
 }
