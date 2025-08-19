@@ -18,11 +18,10 @@ export async function sendOtpAction(previusState, formData) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ mobile }),
     });
-
+    const result = await res.json();
     if (!res.ok) {
       return { success: false, error: result?.message || "ارسال ناموفق بود" };
     }
-    const result = await res.json();
     return {
       success: true,
       message: result.message,
