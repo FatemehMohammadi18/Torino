@@ -12,13 +12,13 @@ import { useRouter } from "next/navigation";
 
 const ValidationSchema = Yup.object().shape({
   fullName: Yup.string()
-   .min(3, 'باید بیشتر از 3 حرف  باشد.')
-  .required("لطفا نام و نام خانوادگی خود را وارد کنید."),
+    .min(3, "باید بیشتر از 3 حرف  باشد.")
+    .required("لطفا نام و نام خانوادگی خود را وارد کنید."),
   gender: Yup.string().required("لطفا جنسیت خود را وارد کنید."),
   birthDate: Yup.string().required("لطفا تاریخ تولد خود را وارد کنید."),
   nationalCode: Yup.string()
-   .min(10, 'باید بیشتر از 10 حرف  باشد.')
-  .required("لطفا کدملی خود را وارد کنید."),
+    .min(10, "باید بیشتر از 10 حرف  باشد.")
+    .required("لطفا کدملی خود را وارد کنید."),
 });
 
 export default function BasketComponent({ tour }) {
@@ -41,7 +41,7 @@ export default function BasketComponent({ tour }) {
         nationalCode: values.nationalCode,
       };
       const editUser = await editProfile(updateUser);
-      setUser(editUser);
+      setUser(editUser?.user);
       router.push("/user/tours");
       showToast({
         message: "سفارش با موفقیت ثبت شد!",
