@@ -42,7 +42,7 @@ export default function BasketComponent({ tour }) {
       };
       const editUser = await editProfile(updateUser);
       setUser(editUser?.user);
-      router.push("/user/tours");
+      router.replace("/user/tours");
       showToast({
         message: "سفارش با موفقیت ثبت شد!",
         type: "success",

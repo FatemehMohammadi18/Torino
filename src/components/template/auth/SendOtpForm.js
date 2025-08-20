@@ -8,12 +8,23 @@ import DeleteIcon from "@/components/icons/DeleteIcon";
 import SubmitBtn from "../../atomic/SubmitBtn";
 import { mobileValid } from "@/utils/validations";
 import { useToast } from "@/context/toastContext";
+import { useRouter, useSearchParams } from "next/navigation";
 
 function SendOtpForm({ mobile, setMobile, step, setStep, setIsOpen }) {
   // In earlier React Canary versions, this API was part of React DOM and called "useFormState".
   const [state, formAction] = useActionState(sendOtpAction, null);
   const [clientError, setClientError] = useState(null);
   const { showToast } = useToast();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const deleteQuery = () => {
+    if (searchParams.has("redirect")) {
+      const newParams = new URLSearchParams(searchParams.toString());
+      newParams.delete("redirect");
+      router.replace(`?${newParams.toString()}`, { scroll: false });
+    }
+  };
 
   useEffect(() => {
     if (state?.success && state.message) {
@@ -41,11 +52,17 @@ function SendOtpForm({ mobile, setMobile, step, setStep, setIsOpen }) {
 
   return (
     <div
-      onClick={(e) => e.stopPropagation()}
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
       className="w-[358px] lg:w-[561px] h-[362px] p-6 rounded-[20px] bg-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] relative flex flex-col gap-6"
     >
       <div className="absolute top-3 left-3 cursor-pointer">
-        <DeleteIcon onClick={() => setIsOpen(false)} />
+        <DeleteIcon
+          onClick={() => {
+            setIsOpen(false), deleteQuery();
+          }}
+        />
       </div>
       <h2 className="text-[22px] lg:text-[28px] font-semibold text-center mt-9">
         ورود به تورینو
