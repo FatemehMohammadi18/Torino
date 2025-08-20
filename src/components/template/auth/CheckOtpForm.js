@@ -12,10 +12,10 @@ function CheckOtpForm({ mobile, setStep, setIsOpen, onSuccess }) {
   const [code, setCode] = useState("");
   const [showResend, setShowResend] = useState(false);
   const [state, formAction] = useActionState(checkOtpAction, null);
-  const { user, setUser } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
   useEffect(() => {
     if (state?.success) {
-      const { accessToken, refreshToken, user } = state.data;
+      const { user } = state.data;
       setCookie(state.data);
       setUser(user);
 

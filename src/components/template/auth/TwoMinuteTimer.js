@@ -1,5 +1,6 @@
 "use client";
 
+import { useToast } from "@/context/toastContext";
 import { sendOtpAction } from "actions/sendOtpAction";
 import { useEffect, useState } from "react";
 
@@ -9,12 +10,24 @@ export function TwoMinuteTimer({
   showResend,
   setShowResend,
 }) {
-  const [timeLeft, setTimeLeft] = useState(120);
+  const [timeLeft, setTimeLeft] = useState(30);
+  const { showToast } = useToast();
 
   const handleResend = async () => {
     setShowResend(false);
-    setTimeLeft(120);
-    await sendOtpAction(null, mobile);
+    setTimeLeft(30);
+    const res = await sendOtpAction(mobile, null);
+    if (res?.success) {
+      showToast({
+        message: `${res.message} کد: ${res.code}`,
+        type: "success",
+      });
+    } else {
+      showToast({
+        message: res.error || "ارسال ناموفق بود",
+        type: "error",
+      });
+    }
   };
 
   useEffect(() => {

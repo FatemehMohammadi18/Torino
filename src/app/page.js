@@ -26,11 +26,7 @@ export default async function Home({ searchParams }) {
         </div>
         <Wrapper>
           <SearchTour />
-          <div className="p-4 xl:p-0 xl:py-12">
-            <h2 className="text-xl font-normal text-[#000000] mb-2">
-              {" "}
-              همه تورها
-            </h2>
+          <div className="p-4 xl:p-0 xl:pb-12 xl:pt-5">
             <TourDetails initialTours={tours} />
           </div>
           <CallToBookBanner />

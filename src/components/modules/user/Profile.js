@@ -12,7 +12,7 @@ function SubmitButton({ label }) {
     <button
       type="submit"
       disabled={pending}
-      className={`w-1/2 px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 ${
+      className={`w-1/2 xl:min-w-[90px] max-h-[39px] min-h-[39px] mt-auto px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 ${
         pending ? "opacity-50 cursor-not-allowed" : ""
       }`}
     >
@@ -103,7 +103,7 @@ function Profile() {
               <button
                 type="button"
                 onClick={() => setEditUserInfo(false)}
-                className="w-1/2 px-6 py-2 border-2 border-primary text-primary rounded hover:bg-primary hover:text-white"
+                className="w-1/2 xl:min-w-[90px] max-h-[38px] mt-auto px-6 py-2 border-2 border-primary text-primary rounded hover:bg-primary hover:text-white"
               >
                 انصراف
               </button>

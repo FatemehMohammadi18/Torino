@@ -1,6 +1,7 @@
 "use client";
-import { useContext, useRef, useState } from "react";
-import { Formik, Field, Form } from "formik";
+import { useContext, useRef } from "react";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import { UserContext } from "context/UserContext";
 import api from "config/api";
 import editProfile from "services/editUser";
@@ -8,6 +9,17 @@ import ProfileIcon from "@/components/icons/ProfileIcon";
 import ArrowDownIcon from "@/components/icons/ArrowDown";
 import { useToast } from "@/context/toastContext";
 import { useRouter } from "next/navigation";
+
+const ValidationSchema = Yup.object().shape({
+  fullName: Yup.string()
+    .min(3, "باید بیشتر از 3 حرف  باشد.")
+    .required("لطفا نام و نام خانوادگی خود را وارد کنید."),
+  gender: Yup.string().required("لطفا جنسیت خود را وارد کنید."),
+  birthDate: Yup.string().required("لطفا تاریخ تولد خود را وارد کنید."),
+  nationalCode: Yup.string()
+    .min(10, "باید بیشتر از 10 حرف  باشد.")
+    .required("لطفا کدملی خود را وارد کنید."),
+});
 
 export default function BasketComponent({ tour }) {
   const router = useRouter();
@@ -29,8 +41,8 @@ export default function BasketComponent({ tour }) {
         nationalCode: values.nationalCode,
       };
       const editUser = await editProfile(updateUser);
-      setUser(editUser);
-      router.push("/user/tours");
+      setUser(editUser?.user);
+      router.replace("/user/tours");
       showToast({
         message: "سفارش با موفقیت ثبت شد!",
         type: "success",
@@ -62,17 +74,25 @@ export default function BasketComponent({ tour }) {
             nationalCode: nationalCode || "",
             birthDate: birthDate || "",
           }}
+          validationSchema={ValidationSchema}
           enableReinitialize
           onSubmit={handleSubmit}
         >
           {({ values, handleChange }) => (
             <Form className="flex flex-wrap gap-6 xl:gap-1.5">
-              <Field
-                type="text"
-                name="fullName"
-                placeholder="نام و نام خانوادگی"
-                className="w-full border border-[#808080] rounded-[5px] text-sm p-2 xl:w-[32%]"
-              />
+              <div className="w-full flex flex-col xl:w-[32%]">
+                <Field
+                  type="text"
+                  name="fullName"
+                  placeholder="نام و نام خانوادگی"
+                  className="border border-[#808080] rounded-[5px] text-sm p-2"
+                />
+                <ErrorMessage
+                  name="fullName"
+                  component="span"
+                  className="text-red-500 text-xs mt-2"
+                />
+              </div>
               <div className="relative w-full xl:w-[32%]">
                 <Field
                   as="select"
@@ -86,18 +106,37 @@ export default function BasketComponent({ tour }) {
                   <option value="male">مذکر</option>
                 </Field>
                 <ArrowDownIcon className="w-3 h-3 absolute top-1/2 left-4 -translate-y-1/2 pointer-events-none mt-1 fill-[#808080]" />
+                <ErrorMessage
+                  name="gender"
+                  component="span"
+                  className="text-red-500 text-xs mt-2"
+                />
               </div>
-              <Field
-                type="text"
-                name="nationalCode"
-                placeholder="کد ملی"
-                className="w-full border border-[#808080] rounded-[5px] text-sm p-2 xl:w-[32%]"
-              />
-              <Field
-                type="date"
-                name="birthDate"
-                className="w-full border border-[#808080] rounded-[5px] text-sm p-2 xl:w-[32%]"
-              />
+              <div className="w-full flex flex-col xl:w-[32%]">
+                <Field
+                  type="text"
+                  name="nationalCode"
+                  placeholder="کد ملی"
+                  className="border border-[#808080] rounded-[5px] text-sm p-2"
+                />
+                <ErrorMessage
+                  name="nationalCode"
+                  component="span"
+                  className="text-red-500 text-xs mt-2"
+                />
+              </div>
+              <div className="w-full flex flex-col xl:w-[32%]">
+                <Field
+                  type="date"
+                  name="birthDate"
+                  className="border border-[#808080] rounded-[5px] text-sm p-2"
+                />
+                <ErrorMessage
+                  name="birthDate"
+                  component="span"
+                  className="text-red-500 text-xs mt-2"
+                />
+              </div>
               <button
                 type="submit"
                 ref={submitButtonRef}
