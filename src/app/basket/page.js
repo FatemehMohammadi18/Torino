@@ -28,7 +28,7 @@ export default async function Page() {
             className="w-[300px]"
             alt="سبد خرید شما خالی است"
           />
-          <h1 className="text-center font-black text-2xl">{tour?.message}</h1>
+          <h1 className="text-center font-black text-2xl mt-4">{tour?.message}</h1>
         </div>
       ) : (
         <BasketComponent tour={tour} />
