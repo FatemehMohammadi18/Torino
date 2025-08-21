@@ -19,13 +19,6 @@ export default function BasketLayout({ children }) {
     }
   }, [user, loading, redirecting]);
 
-  if (loading)
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <p>در حال بارگذاری...</p>
-      </div>
-    );
-
   if (!user)
     return (
       <div className="flex flex-col gap-2 justify-center items-center h-screen">
