@@ -13,7 +13,8 @@ export async function sendOtpAction(previusState, formData) {
     return { success: false, error: "شماره موبایل نامعتبر است" };
   }
   try {
-    const res = await fetch("http://localhost:6500/auth/send-otp", {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    const res = await fetch(`${baseUrl}/auth/send-otp`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ mobile }),

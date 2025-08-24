@@ -3,7 +3,8 @@ import Image from "next/image";
 import ReserveButton from "@/components/atomic/ReserveButton";
 
 async function getTourDetails(tourId) {
-  const res = await fetch(`http://localhost:6500/tour/${tourId}`, {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const res = await fetch(`${baseUrl}/tour/${tourId}`, {
     cache: "no-store",
   });
   if (!res.ok) throw new Error("خطا در دریافت اطلاعات تور");
