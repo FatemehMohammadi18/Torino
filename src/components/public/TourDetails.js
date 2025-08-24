@@ -16,7 +16,8 @@ export default function TourDetails({ initialTours }) {
     }
 
     async function fetchTours() {
-      const url = `http://localhost:6500/tour?${query}`;
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+      const url = `${baseUrl}/tour?${query}`;
       const res = await fetch(url);
       if (!res.ok) return;
       const data = await res.json();

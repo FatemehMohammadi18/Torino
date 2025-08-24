@@ -4,7 +4,8 @@ export async function checkOtpAction(previusState, formData) {
   const code = formData.get("code");
 
   try {
-    const res = await fetch("http://localhost:6500/auth/check-otp", {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    const res = await fetch(`${baseUrl}/auth/check-otp`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ mobile, code }),

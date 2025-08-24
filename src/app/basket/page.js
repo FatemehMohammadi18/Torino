@@ -5,8 +5,9 @@ import Image from "next/image";
 const getTour = async () => {
   const cookieStore = await cookies();
   const token = cookieStore.get("accessToken")?.value;
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-  const res = await fetch("http://localhost:6500/basket", {
+  const res = await fetch(`${baseUrl}/basket`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -28,7 +29,9 @@ export default async function Page() {
             className="w-[300px]"
             alt="سبد خرید شما خالی است"
           />
-          <h1 className="text-center font-black text-2xl mt-4">{tour?.message}</h1>
+          <h1 className="text-center font-black text-2xl mt-4">
+            {tour?.message}
+          </h1>
         </div>
       ) : (
         <BasketComponent tour={tour} />
