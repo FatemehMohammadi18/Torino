@@ -22,16 +22,16 @@ export default async function Page() {
     <div className="flex flex-col gap-6 my-12 xl:flex-row xl:gap-3">
       {tour?.message ? (
         <div className="flex flex-col justify-between mx-auto">
+          <h1 className="text-center font-black text-2xl mb-8">
+            {tour?.message}
+          </h1>
           <Image
-            src="/images/empty-order.jpg"
+            src="/images/empty-order.png"
             width={890}
             height={980}
             className="w-[300px]"
             alt="سبد خرید شما خالی است"
           />
-          <h1 className="text-center font-black text-2xl mt-4">
-            {tour?.message}
-          </h1>
         </div>
       ) : (
         <BasketComponent tour={tour} />
