@@ -63,7 +63,7 @@ function ProfileDropDown({ user, setUser }) {
               className="w-full flex gap-2 items-center justify-start text-start px-4 py-3 text-sm text-red-600"
             >
               <Image
-                src="/images/logOut.svg"
+                src="/images/logout.svg"
                 width={20}
                 height={20}
                 alt="logout"
