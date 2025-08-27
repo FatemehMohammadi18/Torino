@@ -105,6 +105,68 @@ function SearchTour() {
     router.push(`/?${query}`, { scroll: false });
   };
 
+  const handleClearAllFilters = () => {
+    setOrigin({ id: "", name: "" });
+    setDestination({ id: "", name: "" });
+    setDateRange([null, null]);
+    router.push("/", { scroll: false });
+  };
+
+  const handleRemoveFilter = (key) => {
+    const params = Object.fromEntries(searchParams.entries());
+    delete params[key];
+
+    if (key === "originId") setOrigin({ id: "", name: "" });
+    if (key === "destinationId") setDestination({ id: "", name: "" });
+    if (key === "startDate") setDateRange([null, dateRange[1]]);
+    if (key === "endDate") setDateRange([dateRange[0], null]);
+
+    const query = new URLSearchParams(params).toString();
+    router.push(`/?${query}`, { scroll: false });
+  };
+
+  const activeFilters = () => {
+    const params = Object.fromEntries(searchParams.entries());
+    const filters = [];
+
+    if (params.originId) {
+      const found = origins.find(([id]) => id === params.originId);
+      if (found) filters.push({ key: "originId", label: `مبدا: ${found[1]}` });
+    }
+
+    if (params.destinationId) {
+      const found = destinations.find(([id]) => id === params.destinationId);
+      if (found)
+        filters.push({ key: "destinationId", label: `مقصد: ${found[1]}` });
+    }
+
+    if (params.startDate) {
+      const start = new DateObject({
+        date: new Date(params.startDate),
+        calendar: persian,
+        locale: persian_fa,
+      });
+      filters.push({
+        key: "startDate",
+        label: `تاریخ رفت: ${start.format("YYYY/MM/DD")}`,
+      });
+    }
+
+    if (params.endDate) {
+      const end = new DateObject({
+        date: new Date(params.endDate),
+        calendar: persian,
+        locale: persian_fa,
+      });
+      filters.push({
+        key: "endDate",
+        label: `تاریخ برگشت: ${end.format("YYYY/MM/DD")}`,
+      });
+    }
+
+    return filters;
+  };
+
   return (
     <div className="py-4">
       <h1 className="flex justify-center text-base text-[rgba(89, 89, 89, 1)] font-semibold lg:text-[28px]">
@@ -171,7 +233,37 @@ function SearchTour() {
           </button>
         </form>
       </div>
-      <h2 className="text-xl font-normal text-[#000000] mt-14">همه تورها</h2>
+      {activeFilters().length > 0 ? (
+        <div className="mt-6">
+          <h2 className="text-xl font-normal text-[#000000] mb-3">فیلترها:</h2>
+          <div className="flex flex-wrap gap-2">
+            {activeFilters().map((filter) => (
+              <span
+                key={filter.key}
+                className="flex justify-between items-center gap-2 border-[1px] border-secondary bg-secondary text-white px-2 pt-1 rounded-xl text-sm cursor-pointer"
+              >
+                {filter.label}
+                <button
+                  type="button"
+                  onClick={() => handleRemoveFilter(filter.key)}
+                  className="flex justify-center items-center pt-0.5"
+                >
+                  ✕
+                </button>
+              </span>
+            ))}
+            <button
+              type="button"
+              onClick={handleClearAllFilters}
+              className="mr-auto text-sm text-white bg-red-700 hover:bg-red-800 px-3 pt-1 rounded-xl"
+            >
+              حذف همه ✕
+            </button>
+          </div>
+        </div>
+      ) : (
+        <h2 className="text-xl font-normal text-[#000000] mt-14">همه تورها</h2>
+      )}
     </div>
   );
 }
