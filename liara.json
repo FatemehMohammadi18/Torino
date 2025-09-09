@@ -1,5 +1,5 @@
 {
-  "platform": "static",
+  "platform": "next",
   "build": "npm run build",
   "static": {
     "publicDir": "build"
