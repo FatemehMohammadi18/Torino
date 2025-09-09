@@ -1,7 +1,6 @@
 {
-  "platform": "next",
-  "build": "npm run build",
-  "static": {
-    "publicDir": "build"
-  }
+    "next": {
+    "mirror": true
+    },
+    "port": 3000
 }
