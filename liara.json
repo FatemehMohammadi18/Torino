@@ -1,0 +1,7 @@
+{
+  "platform": "static",
+  "build": "npm run build",
+  "static": {
+    "publicDir": "build"
+  }
+}
